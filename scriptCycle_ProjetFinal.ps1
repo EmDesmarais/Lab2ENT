@@ -6,13 +6,8 @@
 # Date : 30 Avril 2025 
 # ----------------------------------------------------------------------------- 
 
-$csvPath = "./folders.csv" 
+$csvPath = "./fairebackup.csv" 
 $backupDossier = "C:\backups"
-
-$ftpUtilisateur = "ftpuser"
-$ftpMotDePasse = "user123"
-$ftpServeur = "ftp://192.168.159.164"
-
 
 function full_backup($dossier, $backupDossier,$excludeList) {
     
@@ -253,37 +248,6 @@ function incremental_backup {
     Write-Host "Backup incremental cree : $zipPath"
 }
 
-
-function envoyer_FTP {
-    param (
-        [string]$ftpServeur,       
-        [string]$utilisateur,     
-        [string]$motDePasse,
-        [string]$dossierLocal      
-    )
-
-    $client = New-Object System.Net.WebClient
-    $client.Credentials = New-Object System.Net.NetworkCredential($utilisateur, $motDePasse)
-
-    $fichiers = Get-ChildItem -Path $dossierLocal -Filter *.zip
-
-    foreach ($fichier in $fichiers) {
-        $cheminLocal = $fichier.FullName
-        $nomFichier = $fichier.Name
-        $cheminFTP = "$ftpServeur/$nomFichier"
-
-        #Write-Host $cheminLocal
-
-        try {
-            $client.UploadFile($cheminFTP, "STOR", $cheminLocal) 
-            Write-Host "Transfert de $nomFichier vers $ftpServeur reussi"
-        } catch {
-            Write-Host "Erreur lors du transfert du fichier $nomFichier : $($_.Exception.Message)"
-        }
-        
-    }
-}
-
 function lire_csv {
 
     $entries = Import-Csv -Path $csvPath
@@ -351,6 +315,6 @@ function lire_csv {
 
 verifDossierExiste($backupDossier)
 lire_csv
-#envoyer_FTP -ftpServeur $ftpServeur -utilisateur $ftpUtilisateur -motDePasse $ftpMotDePasse -dossierLocal $backupDossier
+
 
 
