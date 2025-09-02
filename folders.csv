@@ -1,0 +1,6 @@
+Dossier,TypeBackup,Exclusions,Cycle
+C:/docs1,differential,pdf-zip,3
+C:/docs2,incremental,pdf-exe,2
+C:/docs3,full,jpeg,
+C:/docs4,incremental,,3
+
