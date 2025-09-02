@@ -8,6 +8,7 @@
 
 $csvPath = "./fairebackup.csv" 
 $backupDossier = "C:\backups"
+$logFile = "C:\backups\backup_log.txt"
 
 function full_backup($dossier, $backupDossier,$excludeList) {
     
@@ -57,7 +58,9 @@ function full_backup($dossier, $backupDossier,$excludeList) {
     #Remove-Item -Path $dossierTemp -Recurse -Force
     
     #Message optionnel ?
-    Write-Host "Backup complet cree : $zipPath"
+    Write-Host "Backup complet cree : $zipPath" 
+    "Backup complet cree : $zipPath" | Out-File -FilePath $logFile -Append
+
 }
 
 function verifDossierExiste {
@@ -149,6 +152,7 @@ function differential_backup {
     #Remove-Item -Path $dossierTemp -Recurse -Force
 
     Write-Host "Backup differentiel cree : $zipPath"
+    "Backup differentiel cree : $zipPath" | Out-File -FilePath $logFile -Append
 }
 
 
@@ -245,7 +249,8 @@ function incremental_backup {
     Compress-Archive -Path "$dossierTemp\*" -DestinationPath $zipPath
     #Remove-Item -Path $dossierTemp -Recurse -Force
 
-    Write-Host "Backup incremental cree : $zipPath"
+    Write-Host "Backup incremental cree : $zipPath" 
+    "Backup incremental cree : $zipPath" | Out-File -FilePath $logFile -Append
 }
 
 function lire_csv {
@@ -315,6 +320,7 @@ function lire_csv {
 
 verifDossierExiste($backupDossier)
 lire_csv
+
 
 
 
